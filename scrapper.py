@@ -9,16 +9,18 @@ def remove_html_tags(text):
     text1 = re.sub(clean, '', text)
     return re.sub(r'\[.*?\]','', text1)
 
- 
-url = "https://www.azlyrics.com/lyrics/travisscott/sickomode.html"
-page = urllib2.urlopen(url)
-soup = BeautifulSoup(page,"html.parser")
+# Open a txt file and writes data to it 
+sys.stdout = open('output.txt','w')
 
-#Open a txt file and writes data to it 
-sys.stdout = open('PageUrl.txt','w')
+# List of links of lyrics on AZLYRICS
 
-divs = soup.select("div:nth-of-type(5)")
-print(remove_html_tags(str(divs[0])))
+urls = ["https://www.azlyrics.com/lyrics/travisscott/sickomode.html","https://www.azlyrics.com/lyrics/sheckwes/mobamba.html"]
+for url in urls:
+    page = urllib2.urlopen(url)
+    soup = BeautifulSoup(page,"html.parser")
+
+    divs = soup.select("div:nth-of-type(5)")
+    print(remove_html_tags(str(divs[0])))
 
 
  
