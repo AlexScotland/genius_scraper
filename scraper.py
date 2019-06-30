@@ -36,7 +36,7 @@ def getLyrics(songUrl):
     try:
         page=urllib2.urlopen(song[1])
     except Exception as msg:
-        print("[ERR ] Cannot Navigate to link:  "+msg)
+        print("[ERR ] Cannot Navigate to link:  "+str(msg))
         print("[Cont] Skipping Song.")
     else:
         soup=BeautifulSoup(page,'lxml')
@@ -45,21 +45,35 @@ def getLyrics(songUrl):
         text=str(text)
         text=strip_tags(text)
         text=text.replace("<!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing agreement. Sorry about that. -->","")
-    return text
+        return text
 
 def writeTextFile(songText, songName):
     with open("dataset.txt", "a") as txtFile:
         txtFile.write(songName)
         txtFile.write(songText)
         txtFile.close()
+
+def concatURL(artistName):
+    artistName=artistName.lower()
+    first_letter = artistName[0]
+    url = "http://www.azlyrics.com/"+first_letter+"/"+artistName.replace(" ", "")+".html"
+    return url
+
 #############################################################################################
-urls = ["http://www.azlyrics.com/e/eminem.html"]
-for url in urls:
-    songList=getSongList(url)
+artist_names = ['Lil Pump']
+proxies = {
+    'http': '141.176.60.201:3128',
+    'http': '209.97.131.118:8080',
+           }
+for name in artist_names:
+    artist_url = concatURL(name)
+    print(artist_url)
+    songList=getSongList(artist_url)
     counter = 0
     for song in songList:
         songLyrics=getLyrics(song)
-        writeTextFile(songLyrics,str(songList[counter][0]))
+        if songLyrics == None:
+            pass
+        else:
+            writeTextFile(songLyrics,str(songList[counter][0]))
         counter +=1
-
-        
