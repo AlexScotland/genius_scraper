@@ -80,7 +80,7 @@ class webSession:
             
 def getSongList(url):
     song_list = []
-    page = urllib2.urlopen(url)
+    page = urllib.request.urlopen(url)
     soup = BeautifulSoup(page,"html.parser")    
     for song in soup.find_all('div',{'id':'listAlbum'}):
         for link in song.find_all('a'):
@@ -93,7 +93,7 @@ def getSongList(url):
 
 def getLyrics(song_url):
     try:
-        page=urllib2.urlopen(song[1])
+        page=urllib.request.urlopen(song[1])
     except Exception as msg:
         print("[ERR ] Cannot Navigate to link:  "+str(msg))
         print("[Cont] Skipping Song.")
